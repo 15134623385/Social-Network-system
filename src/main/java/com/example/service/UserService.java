@@ -8,6 +8,7 @@ import com.example.entity.Account;
 import com.example.entity.User;
 import com.example.exception.CustomException;
 import com.example.mapper.UserMapper;
+import com.example.utils.SaltUtils;
 import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 import java.security.MessageDigest;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -42,6 +45,12 @@ public class UserService {
         }
         // 4. 默认用户角色
         user.setRole(RoleEnum.USER.name());
+        // 5. 随机生成盐字符串
+        String salt = SaltUtils.generateSalt();
+        user.setSalt(salt);
+        // 别忘了传到数据库的密码应该是hash过的
+        String hashedPassword = SaltUtils.hashedPassword(user.getPassword(), salt);
+        user.setPassword(hashedPassword);
         userMapper.insert(user);
     }
 
@@ -78,26 +87,10 @@ public class UserService {
         if (ObjectUtil.isNull(dbUser)) {
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
-        String hashedPassword = "";
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            String inputString = account.getPassword() + dbUser.getSalt();
-            byte[] hashBytes = digest.digest(inputString.getBytes("UTF-8"));
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hashBytes) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-            hashedPassword = hexString.toString();
-            System.out.println(inputString);
-            System.out.println(hashedPassword);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (!hashedPassword.equals(dbUser.getPassword())) {
+        // 检查密码
+        String password = account.getPassword();
+        String salt = dbUser.getSalt();
+        if (!SaltUtils.hashedPassword(password, salt).equals(dbUser.getPassword())) {
             throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
         }
         // 生成token
@@ -121,10 +114,14 @@ public class UserService {
         if (ObjectUtil.isNull(dbUser)) {
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
-        if (!account.getPassword().equals(dbUser.getPassword())) {
+        String newHashedPW = SaltUtils.hashedPassword(account.getPassword(), dbUser.getSalt());// 使用旧盐
+        if (!newHashedPW.equals(dbUser.getPassword())) {
             throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
         }
-        dbUser.setPassword(account.getNewPassword());
+        String salt = SaltUtils.generateSalt();
+        newHashedPW = SaltUtils.hashedPassword(account.getNewPassword(), salt);// 使用新盐
+        dbUser.setSalt(salt);
+        dbUser.setPassword(newHashedPW);
         this.updateById(dbUser);
     }
 

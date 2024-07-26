@@ -8,6 +8,7 @@ import com.example.entity.Account;
 import com.example.entity.Admin;
 import com.example.exception.CustomException;
 import com.example.mapper.AdminMapper;
+import com.example.utils.SaltUtils;
 import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -101,26 +102,9 @@ public class AdminService {
         }
         // 需要避免数据库中的密码明文存储
         // 明文密码+盐字符串进行SHA-256后和数据库中的结果进行比较
-        String hashedPassword = "";
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            String inputString = account.getPassword() + dbAdmin.getSalt();
-            byte[] hashBytes = digest.digest(inputString.getBytes("UTF-8"));
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hashBytes) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-            hashedPassword = hexString.toString();
-            //System.out.println(inputString);
-            //System.out.println(hashedPassword);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (!hashedPassword.equals(dbAdmin.getPassword())) {
+        String password = account.getPassword();
+        String salt = dbAdmin.getSalt();
+        if (!SaltUtils.hashedPassword(password, salt).equals(dbAdmin.getPassword())) {
             throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
         }
         // 生成token
@@ -138,10 +122,14 @@ public class AdminService {
         if (ObjectUtil.isNull(dbAdmin)) {
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
-        if (!account.getPassword().equals(dbAdmin.getPassword())) {
+        String newHashedPW = SaltUtils.hashedPassword(account.getPassword(), dbAdmin.getSalt());// 使用旧盐
+        if (!newHashedPW.equals(dbAdmin.getPassword())) {
             throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
         }
-        dbAdmin.setPassword(account.getNewPassword());
+        String salt = SaltUtils.generateSalt();
+        newHashedPW = SaltUtils.hashedPassword(account.getNewPassword(), salt);// 使用新盐
+        dbAdmin.setSalt(salt);
+        dbAdmin.setPassword(newHashedPW);
         adminMapper.updateById(dbAdmin);
     }
 
