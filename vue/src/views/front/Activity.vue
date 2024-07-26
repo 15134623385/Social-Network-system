@@ -1,9 +1,6 @@
 <template>
   <div class="main-content">
-
     <activity-list :span="6" />
-
-    <Footer />
   </div>
 </template>
 

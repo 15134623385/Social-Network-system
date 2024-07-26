@@ -25,8 +25,6 @@
           :total="total">
       </el-pagination>
     </div>
-
-    <Footer />
   </div>
 </template>
 

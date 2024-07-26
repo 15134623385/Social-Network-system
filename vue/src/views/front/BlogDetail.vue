@@ -23,10 +23,10 @@
         <!--     点赞和收藏数据   -->
         <div class="card" style="text-align: center; font-size: 20px; color: #666; margin-bottom: 10px">
           <span style="margin-right: 20px; cursor: pointer;" @click="setLikes" :class="{ 'active' : blog.userLike }"><i class="el-icon-like"></i> {{ blog.likesCount }}</span>
-          <span style=" cursor: pointer"  @click="setCollect" :class="{ 'active' : blog.userCollect }"><i class="el-icon-star-off"></i> {{ blog.collectCount }}</span>
+          <span style=" cursor: pointer"  @clicssk="setCollect" :class="{ 'active' : blog.userCollect }"><i class="el-icon-star-off"></i> {{ blog.collectCount }}</span>
         </div>
 
-<!--        评论-->
+        <!--     评论-->
         <Comment :fid="blogId" module='博客' />
       </div>
 
@@ -69,29 +69,11 @@
             </div>
           </div>
         </div>
-
-        <div class="card">
-          <div style="display: flex; grid-gap: 10px; ">
-            <div style="flex: 1; line-height: 25px">
-              找对属于你的学习圈子
-              扫码学习精品项目
-            </div>
-            <img src="@/assets/imgs/广告.png" alt="" style="width: 50px; height: 50px; border-radius: 5px">
-          </div>
-        </div>
-
-      </div>
-
-
-
     </div>
-
-    <Footer />
   </div>
 </template>
 
 <script>
-import Footer from "@/components/Footer";
 import Comment from "@/components/Comment";
 
 export default {

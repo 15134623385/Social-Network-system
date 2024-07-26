@@ -8,11 +8,7 @@
       </div>
 
       <div style="flex: 1;">
-
         <blog-list :categoryName="current" ref="blogListRef" />
-
-        <Footer />
-
       </div>
 
       <div style="width: 260px">
@@ -47,23 +43,12 @@
           </div>
         </div>
 
-        <div style="line-height: 30px; color: #666; padding: 0 10px">
-          <div>举报邮箱： feedback@xitu.io</div>
-          <div>座机电话： 010-83434395</div>
-          <div>京ICP备888888©2024 项目训练营</div>
-        </div>
-
       </div>
-
-
-
     </div>
   </div>
 </template>
 
 <script>
-
-import Footer from "@/components/Footer";
 import BlogList from "@/components/BlogList";
 export default {
   components: {

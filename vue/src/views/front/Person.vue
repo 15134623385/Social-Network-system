@@ -45,13 +45,10 @@
         </div>
       </el-tab-pane>
     </el-tabs>
-
-    <Footer />
   </div>
 </template>
 
 <script>
-import Footer from "@/components/Footer";
 import PersonPage from "@/components/PersonPage";
 import BlogList from "@/components/BlogList";
 import ActivityList from "@/components/ActivityList";
