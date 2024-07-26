@@ -5,7 +5,7 @@
 <mapper namespace="com.example.mapper.AdminMapper">
 
     <sql id="Base_Column_List">
-        id,username,password,name,phone,email,avatar,role
+        id,username,salt,password,name,phone,email,avatar,role
     </sql>
 
     <select id="selectAll" resultType="com.example.entity.Admin">
@@ -15,6 +15,7 @@
         <where>
             <if test="id != null"> and id= #{id}</if>
             <if test="username != null"> and username like concat('%', #{username}, '%')</if>
+            <if test="salt != null"> and salt= #{salt}</if>
             <if test="password != null"> and password= #{password}</if>
             <if test="name != null"> and name= #{name}</if>
             <if test="phone != null"> and phone= #{phone}</if>
@@ -41,6 +42,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
                 <if test="username != null">username,</if>
+                <if test="salt != null">salt,</if>
                 <if test="password != null">password,</if>
                 <if test="name != null">name,</if>
                 <if test="phone != null">phone,</if>
@@ -51,6 +53,7 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
                 <if test="id != null">#{id},</if>
                 <if test="username != null">#{username},</if>
+                <if test="salt != null">salt,</if>
                 <if test="password != null">#{password},</if>
                 <if test="name != null">#{name},</if>
                 <if test="phone != null">#{phone},</if>
@@ -65,6 +68,9 @@
         <set>
             <if test="username != null">
                 username = #{username},
+            </if>
+            <if test="salt != null">
+                salt = #{salt},
             </if>
             <if test="password != null">
                 password = #{password},

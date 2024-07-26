@@ -10,6 +10,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="username != null">username,</if>
+            <if test="salt != null"> salt</if>
             <if test="password != null">password,</if>
             <if test="name != null">name,</if>
             <if test="phone != null">phone,</if>
@@ -23,6 +24,7 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="username != null">#{username},</if>
+            <if test="salt != null">#{salt},</if>
             <if test="password != null">#{password},</if>
             <if test="name != null">#{name},</if>
             <if test="phone != null">#{phone},</if>
@@ -40,6 +42,9 @@
         <set>
             <if test="username != null">
                 username = #{username},
+            </if>
+            <if test="salt != null">
+                salt = #{salt},
             </if>
             <if test="password != null">
                 password = #{password},

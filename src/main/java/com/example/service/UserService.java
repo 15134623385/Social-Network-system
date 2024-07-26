@@ -5,7 +5,6 @@ import com.example.common.Constants;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
-import com.example.entity.Admin;
 import com.example.entity.User;
 import com.example.exception.CustomException;
 import com.example.mapper.UserMapper;
@@ -16,6 +15,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
+import java.security.MessageDigest;
 import java.util.List;
 
 @Service
@@ -77,7 +78,26 @@ public class UserService {
         if (ObjectUtil.isNull(dbUser)) {
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
-        if (!account.getPassword().equals(dbUser.getPassword())) {
+        String hashedPassword = "";
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            String inputString = account.getPassword() + dbUser.getSalt();
+            byte[] hashBytes = digest.digest(inputString.getBytes("UTF-8"));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            hashedPassword = hexString.toString();
+            System.out.println(inputString);
+            System.out.println(hashedPassword);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!hashedPassword.equals(dbUser.getPassword())) {
             throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
         }
         // 生成token

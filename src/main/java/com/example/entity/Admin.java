@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 管理员
-*/
+ */
 public class Admin extends Account implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -12,6 +12,8 @@ public class Admin extends Account implements Serializable {
     private Integer id;
     /** 用户名 */
     private String username;
+    /** 盐字符串 */
+    private String salt;
     /** 密码 */
     private String password;
     /** 姓名 */
@@ -43,6 +45,17 @@ public class Admin extends Account implements Serializable {
     @Override
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public String getSalt() {
+
+        return salt;
+    }
+
+    @Override
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     @Override

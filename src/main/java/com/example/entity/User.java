@@ -4,6 +4,7 @@ public class User extends Account {
 
     private Integer id;
     private String username;
+    private String salt;
     private String password;
     private String name;
     private String avatar;
@@ -60,6 +61,17 @@ public class User extends Account {
     @Override
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public String getSalt() {
+
+        return salt;
+    }
+
+    @Override
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     @Override

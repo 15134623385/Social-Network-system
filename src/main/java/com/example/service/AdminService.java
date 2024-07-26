@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.security.MessageDigest;
 
 /**
  * 管理员业务处理
@@ -98,7 +99,28 @@ public class AdminService {
         if (ObjectUtil.isNull(dbAdmin)) {
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
-        if (!account.getPassword().equals(dbAdmin.getPassword())) {
+        // 需要避免数据库中的密码明文存储
+        // 明文密码+盐字符串进行SHA-256后和数据库中的结果进行比较
+        String hashedPassword = "";
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            String inputString = account.getPassword() + dbAdmin.getSalt();
+            byte[] hashBytes = digest.digest(inputString.getBytes("UTF-8"));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            hashedPassword = hexString.toString();
+            //System.out.println(inputString);
+            //System.out.println(hashedPassword);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!hashedPassword.equals(dbAdmin.getPassword())) {
             throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
         }
         // 生成token

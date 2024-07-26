@@ -9,6 +9,8 @@ public class Account {
     private String username;
     /** 名称 */
     private String name;
+    /* 盐字符串 */
+    private String salt;
     /** 密码 */
     private String password;
     /** 角色标识 */
@@ -42,6 +44,14 @@ public class Account {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public String getPassword() {
