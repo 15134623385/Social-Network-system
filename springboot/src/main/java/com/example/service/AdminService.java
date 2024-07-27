@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.security.MessageDigest;
 
 /**
  * 管理员业务处理
@@ -111,6 +110,9 @@ public class AdminService {
         String tokenData = dbAdmin.getId() + "-" + RoleEnum.ADMIN.name();
         String token = TokenUtils.createToken(tokenData, dbAdmin.getPassword());
         dbAdmin.setToken(token);
+        // password,salt字段不应该暴露给前端
+        dbAdmin.setPassword("");
+        dbAdmin.setSalt("");
         return dbAdmin;
     }
 
