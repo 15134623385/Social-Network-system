@@ -17,9 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-import java.security.MessageDigest;
-import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -97,6 +94,9 @@ public class UserService {
         String tokenData = dbUser.getId() + "-" + RoleEnum.USER.name();
         String token = TokenUtils.createToken(tokenData, dbUser.getPassword());
         dbUser.setToken(token);
+        // password,salt字段不应该暴露给前端
+        dbUser.setPassword("");
+        dbUser.setSalt("");
         return dbUser;
     }
 
