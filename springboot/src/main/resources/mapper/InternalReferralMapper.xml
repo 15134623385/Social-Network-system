@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.internalReferral.mapper.InternalReferralMapper">
+    
+    <resultMap type="InternalReferral" id="InternalReferralResult">
+        <result property="id"    column="id"    />
+        <result property="InternalReferral title"    column="InternalReferral title"    />
+        <result property="InternalReferral tag"    column="InternalReferral tag"    />
+        <result property="InternalReferral content"    column="InternalReferral content"    />
+        <result property="InternalReferral likes"    column="InternalReferral likes"    />
+        <result property="date"    column="date"    />
+        <result property="readCnt"    column="read_cnt"    />
+    </resultMap>
+
+    <sql id="selectInternalReferralVo">
+        select id, InternalReferral title, InternalReferral tag, InternalReferral content, InternalReferral likes, date, read_cnt from internalReferral
+    </sql>
+
+    <select id="selectInternalReferralList" parameterType="InternalReferral" resultMap="InternalReferralResult">
+        <include refid="selectInternalReferralVo"/>
+        <where>  
+            <if test="InternalReferral title != null  and InternalReferral title != ''"> and InternalReferral title like concat('%', #{InternalReferral title}, '%')</if>
+            <if test="InternalReferral tag != null  and InternalReferral tag != ''"> and InternalReferral tag = #{InternalReferral tag}</if>
+            <if test="InternalReferral content != null  and InternalReferral content != ''"> and InternalReferral content = #{InternalReferral content}</if>
+            <if test="InternalReferral likes != null "> and InternalReferral likes = #{InternalReferral likes}</if>
+            <if test="date != null "> and date = #{date}</if>
+            <if test="readCnt != null "> and read_cnt = #{readCnt}</if>
+        </where>
+    </select>
+    
+    <select id="selectInternalReferralById" parameterType="Long" resultMap="InternalReferralResult">
+        <include refid="selectInternalReferralVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertInternalReferral" parameterType="InternalReferral">
+        insert into internalReferral
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="InternalReferral title != null and InternalReferral title != ''">InternalReferral title,</if>
+            <if test="InternalReferral tag != null and InternalReferral tag != ''">InternalReferral tag,</if>
+            <if test="InternalReferral content != null and InternalReferral content != ''">InternalReferral content,</if>
+            <if test="InternalReferral likes != null">InternalReferral likes,</if>
+            <if test="date != null">date,</if>
+            <if test="readCnt != null">read_cnt,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="InternalReferral title != null and InternalReferral title != ''">#{InternalReferral title},</if>
+            <if test="InternalReferral tag != null and InternalReferral tag != ''">#{InternalReferral tag},</if>
+            <if test="InternalReferral content != null and InternalReferral content != ''">#{InternalReferral content},</if>
+            <if test="InternalReferral likes != null">#{InternalReferral likes},</if>
+            <if test="date != null">#{date},</if>
+            <if test="readCnt != null">#{readCnt},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInternalReferral" parameterType="InternalReferral">
+        update internalReferral
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="InternalReferral title != null and InternalReferral title != ''">InternalReferral title = #{InternalReferral title},</if>
+            <if test="InternalReferral tag != null and InternalReferral tag != ''">InternalReferral tag = #{InternalReferral tag},</if>
+            <if test="InternalReferral content != null and InternalReferral content != ''">InternalReferral content = #{InternalReferral content},</if>
+            <if test="InternalReferral likes != null">InternalReferral likes = #{InternalReferral likes},</if>
+            <if test="date != null">date = #{date},</if>
+            <if test="readCnt != null">read_cnt = #{readCnt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInternalReferralById" parameterType="Long">
+        delete from internalReferral where id = #{id}
+    </delete>
+
+    <delete id="deleteInternalReferralByIds" parameterType="String">
+        delete from internalReferral where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
