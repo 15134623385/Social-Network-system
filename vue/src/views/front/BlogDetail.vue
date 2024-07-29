@@ -69,13 +69,9 @@
             </div>
           </div>
         </div>
-<<<<<<< Updated upstream
-    </div>
-=======
       </div>
     </div>
-    <Footer />
->>>>>>> Stashed changes
+  <Footer />
   </div>
 </template>
 

@@ -9,10 +9,7 @@
 
       <div style="flex: 1;">
         <blog-list :categoryName="current" ref="blogListRef" />
-<<<<<<< Updated upstream
-=======
         <Footer />
->>>>>>> Stashed changes
       </div>
 
       <div style="width: 260px">
@@ -40,22 +37,13 @@
             </div>
           </div>
         </div>
-
-        <div style="margin-bottom: 10px">
-          <div v-for="item in topActivityList" :key="item.id" style="margin-bottom: 10px">
-            <a :href="'/front/activityDetail?activityId=' + item.id" target="_blank"><img :src="item.cover" alt="" style="width: 100%; border-radius: 5px"></a>
-          </div>
-        </div>
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Footer from "@/components/Footer";
 import BlogList from "@/components/BlogList";
 export default {
   components: {
