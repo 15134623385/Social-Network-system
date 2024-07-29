@@ -137,7 +137,6 @@ public class BlogService {
         return blogList;
     }
 
-
     public Set<Blog> selectRecommend(Integer blogId) {
         Blog blog = this.selectById(blogId);
         String tags = blog.getTags();

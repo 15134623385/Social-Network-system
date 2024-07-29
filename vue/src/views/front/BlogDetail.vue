@@ -69,7 +69,13 @@
             </div>
           </div>
         </div>
+<<<<<<< Updated upstream
     </div>
+=======
+      </div>
+    </div>
+    <Footer />
+>>>>>>> Stashed changes
   </div>
 </template>
 
@@ -145,8 +151,8 @@ blockquote {
 /* code 样式 */
 code {
   display: inline-block;
-  *display: inline;
-  *zoom: 1;
+  display: inline;
+  zoom: 1;
   background-color: #f1f1f1;
   border-radius: 3px;
   padding: 3px 5px;
