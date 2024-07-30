@@ -1,334 +1,271 @@
 <template>
-  <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="内推标题" prop="InternalReferral title">
-        <el-input
-          v-model="queryParams.title"
-          placeholder="请输入内推标题"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="内推标签" prop="InternalReferral tag">
-        <el-input
-          v-model="queryParams.tag"
-          placeholder="请输入内推标签"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="内推点赞数" prop="InternalReferral likes">
-        <el-input
-          v-model="queryParams.likes"
-          placeholder="请输入内推点赞数"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="内推发表时间" prop="date">
-        <el-date-picker clearable
-          v-model="queryParams.date"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择内推发表时间">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="内推阅读量" prop="readCnt">
-        <el-input
-          v-model="queryParams.readCnt"
-          placeholder="请输入内推阅读量"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+  <div>
+    <div class="search">
+      <el-input placeholder="请输入内推标题查询" style="width: 200px" v-model="name"></el-input>
+      <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
+      <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
+    </div>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['InternalReferral:InternalReferral:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['InternalReferral:InternalReferral:edit']"
-          >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['InternalReferral:InternalReferral:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['InternalReferral:InternalReferral:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+    <div class="operation">
+      <el-button type="primary" plain @click="handleAdd">新增</el-button>
+      <el-button type="danger" plain @click="delBatch">批量删除</el-button>
+    </div>
 
-    <el-table v-loading="loading" :data="InternalReferralList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="内推id" align="center" prop="id" />
-      <el-table-column label="内推标题" align="center" prop="InternalReferral title" />
-      <el-table-column label="内推标签" align="center" prop="InternalReferral tag" />
-      <el-table-column label="内推内容" align="center" prop="InternalReferral content" />
-      <el-table-column label="内推点赞数" align="center" prop="InternalReferral likes" />
-      <el-table-column label="内推发表时间" align="center" prop="date" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.date, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="内推阅读量" align="center" prop="readCnt" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['InternalReferral:InternalReferral:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['InternalReferral:InternalReferral:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+    <div class="table">
+      <el-table :data="tableData" strip @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column prop="id" label="序号" width="70" align="center" sortable></el-table-column>
+        <el-table-column prop="name" label="内推标题"></el-table-column>
+        <el-table-column prop="descr" label="内推简介" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="cover" label="封面">
+          <template v-slot="scope">
+            <div style="display: flex; align-items: center">
+              <el-image style="width: 50px; height: 30px; border-radius: 5px" v-if="scope.row.cover"
+                        :src="scope.row.cover" :preview-src-list="[scope.row.cover]"></el-image>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="start" label="开始时间"></el-table-column>
+        <el-table-column prop="end" label="结束时间"></el-table-column>
+        <el-table-column prop="interCode" label="内推码" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="hostContact" label="主办方及联系方式"></el-table-column>
+        <el-table-column prop="readCount" label="浏览量"></el-table-column>
+        <el-table-column label="查看内推详情" width="140">
+          <template v-slot="scope">
+            <el-button @click="preview(scope.row.content)">查看活动详情</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" width="180">
+          <template v-slot="scope">
+            <el-button size="mini" type="primary" plain @click="handleEdit(scope.row)">编辑</el-button>
+            <el-button size="mini" type="danger" plain @click="del(scope.row.id)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 
-    <!-- 添加或修改内推管理对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="内推标题" prop="InternalReferral title">
-          <el-input v-model="form.title" placeholder="请输入内推标题" />
+      <div class="pagination">
+        <el-pagination
+            background
+            @current-change="handleCurrentChange"
+            :current-page="pageNum"
+            :page-sizes="[5, 10, 20]"
+            :page-size="pageSize"
+            layout="total, prev, pager, next"
+            :total="total">
+        </el-pagination>
+      </div>
+    </div>
+
+
+    <el-dialog title="信息" :visible.sync="fromVisible" width="60%" :close-on-click-modal="false" destroy-on-close>
+      <el-form :model="form" label-width="100px" style="padding-right: 50px" :rules="rules" ref="formRef">
+        <el-form-item label="内推标题" prop="name">
+          <el-input v-model="form.name" placeholder="内推标题"></el-input>
         </el-form-item>
-        <el-form-item label="内推标签" prop="InternalReferral tag">
-          <el-input v-model="form.tag" placeholder="请输入内推标签" />
+        <el-form-item label="内推简介" prop="descr">
+          <el-input type="textarea" v-model="form.descr" placeholder="内推简介"></el-input>
         </el-form-item>
-        <el-form-item label="内推内容">
-          <editor v-model="form.content" :min-height="192"/>
+        <el-form-item label="封面" prop="cover">
+          <el-upload
+              :action="$baseUrl + '/files/upload'"
+              :headers="{ token: user.token }"
+              list-type="picture"
+              :on-success="handleCoverSuccess"
+          >
+            <el-button type="primary">上传封面</el-button>
+          </el-upload>
         </el-form-item>
-        <el-form-item label="内推点赞数" prop="InternalReferral likes">
-          <el-input v-model="form.likes" placeholder="请输入内推点赞数" />
+        <el-form-item label="开始时间" prop="start">
+          <el-date-picker style="width: 100%" value-format="yyyy-MM-dd" format="yyyy-MM-dd" v-model="form.start" placeholder="开始时间"></el-date-picker>
         </el-form-item>
-        <el-form-item label="内推发表时间" prop="date">
-          <el-date-picker clearable
-            v-model="form.date"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择内推发表时间">
-          </el-date-picker>
+        <el-form-item label="结束时间" prop="end">
+          <el-date-picker style="width: 100%" value-format="yyyy-MM-dd" format="yyyy-MM-dd" v-model="form.end" placeholder="结束时间"></el-date-picker>
         </el-form-item>
-        <el-form-item label="内推阅读量" prop="readCnt">
-          <el-input v-model="form.readCnt" placeholder="请输入内推阅读量" />
+        <el-form-item label="内推码" prop="interCode">
+          <el-input v-model="form.interCode" placeholder="内推码"></el-input>
+        </el-form-item>
+        <el-form-item label="主办方及联系方式" prop="host">
+          <el-input v-model="form.hostContact" placeholder="主办方及联系方式"></el-input>
+        </el-form-item>
+        <el-form-item label="内容" prop="content">
+          <div id="editor"></div>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button @click="fromVisible = false">取 消</el-button>
+        <el-button type="primary" @click="save">确 定</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog title="内推详情" :visible.sync="fromVisible1" width="50%" :close-on-click-modal="false" :append-to-body="true" destroy-on-close>
+      <div class="w-e-text">
+        <div v-html="content"></div>
+      </div>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="fromVisible1 = false">关 闭</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import { listInternalReferral, getInternalReferral, delInternalReferral, addInternalReferral, updateInternalReferral } from "@/api/InternalReferral/InternalReferral";
+import E from "wangeditor"
+import hljs from 'highlight.js'
 
 export default {
   name: "InternalReferral",
   data() {
     return {
-      // 遮罩层
-      loading: true,
-      // 选中数组
-      ids: [],
-      // 非单个禁用
-      single: true,
-      // 非多个禁用
-      multiple: true,
-      // 显示搜索条件
-      showSearch: true,
-      // 总条数
+      tableData: [],  // 所有的数据
+      pageNum: 1,   // 当前的页码
+      pageSize: 10,  // 每页显示的个数
       total: 0,
-      // 内推管理表格数据
-      InternalReferralList: [],
-      // 弹出层标题
-      title: "",
-      // 是否显示弹出层
-      open: false,
-      // 查询参数
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        title: null,
-        tag: null,
-        content: null,
-        likes: null,
-        date: null,
-        readCnt: null
-      },
-      // 表单参数
+      name: null,
+      fromVisible: false,
       form: {},
-      // 表单校验
+      user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
       rules: {
-        title: [
-          { required: true, message: "内推标题不能为空", trigger: "blur" }
+        name: [
+          {required: true, message: '请输入内推标题', trigger: 'blur'},
         ],
-        tag: [
-          { required: true, message: "内推标签不能为空", trigger: "blur" }
+        descr: [
+          {required: true, message: '请输入内推简介', trigger: 'blur'},
         ],
-        content: [
-          { required: true, message: "内推内容不能为空", trigger: "blur" }
+        start: [
+          {required: true, message: '请输入内推开始时间', trigger: 'blur'},
         ],
-        likes: [
-          { required: true, message: "内推点赞数不能为空", trigger: "blur" }
+        end: [
+          {required: true, message: '请输入内推结束时间', trigger: 'blur'},
         ],
-        date: [
-          { required: true, message: "内推发表时间不能为空", trigger: "blur" }
+        interCode: [
+          {required: true, message: '请输入内推码', trigger: 'blur'},
         ],
-        readCnt: [
-          { required: true, message: "内推阅读量不能为空", trigger: "blur" }
-        ]
-      }
-    };
+        hostContact: [
+          {required: true, message: '请输入内推主办方及联系方式', trigger: 'blur'},
+        ],
+      },
+      ids: [],
+      editor: null,
+      content: '',
+      fromVisible1: false
+    }
   },
   created() {
-    this.getList();
+    this.load(1)
   },
   methods: {
-    /** 查询内推管理列表 */
-    getList() {
-      this.loading = true;
-      listInternalReferral(this.queryParams).then(response => {
-        this.InternalReferralList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
+    preview(content) {
+      this.content = content
+      this.fromVisible1 = true
     },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
+    handleAdd() {   // 新增数据
+      this.form = {}  // 新增数据的时候清空数据
+      this.fromVisible = true   // 打开弹窗
+      this.setRichText('')
     },
-    // 表单重置
-    reset() {
-      this.form = {
-        id: null,
-        title: null,
-        tag: null,
-        content: null,
-        likes: null,
-        date: null,
-        readCnt: null
-      };
-      this.resetForm("form");
+    handleEdit(row) {   // 编辑数据
+      this.form = JSON.parse(JSON.stringify(row))  // 给form对象赋值  注意要深拷贝数据
+      this.fromVisible = true   // 打开弹窗
+      this.setRichText(this.form.content)
     },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
-      this.multiple = !selection.length
-    },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加内推管理";
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const id = row.id || this.ids
-      getInternalReferral(id).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改内推管理";
-      });
-    },
-    /** 提交按钮 */
-    submitForm() {
-      this.$refs["form"].validate(valid => {
+    save() {   // 保存按钮触发的逻辑  它会触发新增或者更新
+      this.$refs.formRef.validate((valid) => {
         if (valid) {
-          if (this.form.id != null) {
-            updateInternalReferral(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            addInternalReferral(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
+          this.form.content = this.editor.txt.html()
+          this.$request({
+            url: this.form.id ? '/internalReferral/update' : '/internalReferral/add',
+            method: this.form.id ? 'PUT' : 'POST',
+            data: this.form
+          }).then(res => {
+            if (res.code === '200') {  // 表示成功保存
+              this.$message.success('保存成功')
+              this.load(1)
+              this.fromVisible = false
+            } else {
+              this.$message.error(res.msg)  // 弹出错误的信息
+            }
+          })
         }
-      });
+      })
     },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除内推管理编号为"' + ids + '"的数据项？').then(function() {
-        return delInternalReferral(ids);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+    del(id) {   // 单个删除
+      this.$confirm('您确定删除吗？', '确认删除', {type: "warning"}).then(response => {
+        this.$request.delete('/internalReferral/delete/' + id).then(res => {
+          if (res.code === '200') {   // 表示操作成功
+            this.$message.success('操作成功')
+            this.load(1)
+          } else {
+            this.$message.error(res.msg)  // 弹出错误的信息
+          }
+        })
+      }).catch(() => {
+      })
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('InternalReferral/InternalReferral/export', {
-        ...this.queryParams
-      }, `InternalReferral_${new Date().getTime()}.xlsx`)
-    }
+    handleSelectionChange(rows) {   // 当前选中的所有的行数据
+      this.ids = rows.map(v => v.id)   //  [1,2]
+    },
+    delBatch() {   // 批量删除
+      if (!this.ids.length) {
+        this.$message.warning('请选择数据')
+        return
+      }
+      this.$confirm('您确定批量删除这些数据吗？', '确认删除', {type: "warning"}).then(response => {
+        this.$request.delete('/internalReferral/delete/batch', {data: this.ids}).then(res => {
+          if (res.code === '200') {   // 表示操作成功
+            this.$message.success('操作成功')
+            this.load(1)
+          } else {
+            this.$message.error(res.msg)  // 弹出错误的信息
+          }
+        })
+      }).catch(() => {
+      })
+    },
+    load(pageNum) {  // 分页查询
+      if (pageNum) this.pageNum = pageNum
+      this.$request.get('/internalReferral/selectPage', {
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          name: this.name,
+        }
+      }).then(res => {
+        this.tableData = res.data?.list
+        this.total = res.data?.total
+      })
+    },
+    reset() {
+      this.name = null
+      this.load(1)
+    },
+    handleCurrentChange(pageNum) {
+      this.load(pageNum)
+    },
+    handleCoverSuccess(res) {
+      this.form.cover = res.data
+    },
+    setRichText(content) {
+      this.$nextTick(() => {
+        this.editor = new E(`#editor`)
+        this.editor.highlight = hljs
+        this.editor.config.uploadImgServer = this.$baseUrl + '/files/editor/upload'
+        this.editor.config.uploadFileName = 'file'
+        this.editor.config.uploadImgHeaders = {
+          token: this.user.token
+        }
+        this.editor.config.uploadImgParams = {
+          type: 'img',
+        }
+        this.editor.create()  // 创建
+        this.editor.txt.html(content)
+      })
+    },
   }
-};
+}
 </script>
+
+<style scoped>
+
+</style>
