@@ -27,7 +27,7 @@ const routes = [
       { path: 'blog', name: 'Blog', meta: { name: '博客信息' }, component: () => import('../views/manager/Blog') },
       { path: 'activity', name: 'Activity', meta: { name: '活动信息' }, component: () => import('../views/manager/Activity') },
       { path: 'comment', name: 'Comment', meta: { name: '评论信息' }, component: () => import('../views/manager/Comment') },
-      { path: 'internalreferral', name: 'InternalReferral', meta: { name: '内推管理' }, component: () => import('../views/manager/InternalReferral') },
+      { path: 'internalreferralmanage', name: 'InternalReferralManage', meta: { name: '内推管理' }, component: () => import('../views/manager/InternalReferralManage') },
       { path: 'activitySign', name: 'ActivitySign', meta: { name: '活动报名' }, component: () => import('../views/manager/ActivitySign') },
       
     ]
@@ -43,6 +43,7 @@ const routes = [
       { path: 'search', name: 'Search', meta: { name: '博客搜索' }, component: () => import('../views/front/Search') },
       { path: 'activity', name: 'Activity', meta: { name: '活动中心' }, component: () => import('../views/front/Activity') },
       { path: 'activityDetail', name: 'ActivityDetail', meta: { name: '活动详情' }, component: () => import('../views/front/ActivityDetail') },
+      { path: 'internalReferral', name: 'InternalReferral', meta: { name: '内推信息' }, component: () => import('../views/front/InternalReferral') },
       { path: 'newBlog', name: 'NewBlog', meta: { name: '博客编辑' }, component: () => import('../views/front/NewBlog') },
     ]
   },

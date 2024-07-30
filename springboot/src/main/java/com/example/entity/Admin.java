@@ -1,10 +1,14 @@
 package com.example.entity;
 
 import java.io.Serializable;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 管理员
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class Admin extends Account implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -26,91 +30,4 @@ public class Admin extends Account implements Serializable {
     private String avatar;
     /** 角色标识 */
     private String role;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Override
-    public String getSalt() {
-
-        return salt;
-    }
-
-    @Override
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
-    public String getAvatar() {
-        return avatar;
-    }
-
-    @Override
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    @Override
-    public String getRole() {
-        return role;
-    }
-
-    @Override
-    public void setRole(String role) {
-        this.role = role;
-    }
 }

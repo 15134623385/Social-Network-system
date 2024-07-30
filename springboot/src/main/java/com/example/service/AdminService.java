@@ -12,7 +12,6 @@ import com.example.utils.SaltUtils;
 import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -124,7 +123,7 @@ public class AdminService {
         if (ObjectUtil.isNull(dbAdmin)) {
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
-        String newHashedPW = SaltUtils.hashedPassword(account.getPassword(), dbAdmin.getSalt());// 使用旧盐
+        String newHashedPW = SaltUtils.hashedPassword(account.getPassword(), dbAdmin.getSalt());// 使用旧盐验证旧密码是否与新密码相同
         if (!newHashedPW.equals(dbAdmin.getPassword())) {
             throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
         }

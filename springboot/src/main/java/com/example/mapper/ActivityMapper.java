@@ -1,7 +1,6 @@
 package com.example.mapper;
 
 import com.example.entity.Activity;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;

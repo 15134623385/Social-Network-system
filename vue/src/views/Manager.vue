@@ -48,6 +48,7 @@
             <el-menu-item index="/comment">评论信息</el-menu-item>
             <el-menu-item index="/activitySign">活动报名</el-menu-item>
             <el-menu-item index="/notice">公告信息</el-menu-item>
+            <el-menu-item index="/internalreferralmanage">内推管理</el-menu-item>
           </el-submenu>
 
           <el-submenu index="user">
@@ -56,7 +57,7 @@
             </template>
             <el-menu-item index="/admin">管理员信息</el-menu-item>
             <el-menu-item index="/user">用户信息</el-menu-item>
-            <el-menu-item index="/internalreferral">内推管理</el-menu-item>
+            
           </el-submenu>
         </el-menu>
       </div>

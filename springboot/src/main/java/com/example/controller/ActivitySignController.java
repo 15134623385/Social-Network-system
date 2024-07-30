@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import com.example.common.Result;
-import com.example.entity.Activity;
 import com.example.entity.ActivitySign;
 import com.example.service.ActivitySignService;
 import com.github.pagehelper.PageInfo;
