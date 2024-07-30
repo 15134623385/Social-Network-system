@@ -41,7 +41,7 @@
           <div id="editor"></div>
         </el-form-item>
       </el-form>
-      <div style="text-align: center"><el-button type="primary" size="medium" style="width: 100px" @click="save">保 存</el-button></div>
+      <div style="text-align: center"><el-button type="primary" size="medium" style="width: 100px" @click="save">发 布</el-button></div>
     </div>
   </div>
 </template>
@@ -91,8 +91,8 @@ export default {
             method: this.form.id ? 'PUT' : 'POST',
             data: this.form
           }).then(res => {
-            if (res.code === '200') {  // 表示成功保存
-              this.$message.success('保存成功')
+            if (res.code === '200') {  // 表示成功发布
+              this.$message.success('发布成功')
             } else {
               this.$message.error(res.msg)  // 弹出错误的信息
             }

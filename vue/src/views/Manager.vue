@@ -48,7 +48,7 @@
             <el-menu-item index="/activity">活动信息</el-menu-item>
             <el-menu-item index="/activitySign">活动报名</el-menu-item>
             <el-menu-item index="/notice">公告信息</el-menu-item>
-            <el-menu-item index="/internalreferral">内推管理</el-menu-item>
+            <el-menu-item index="/internalReferral">内推管理</el-menu-item>
           </el-submenu>
 
           <el-submenu index="user">

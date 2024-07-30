@@ -4,54 +4,54 @@
 
       <div style="flex: 1; width: 0">
         <div class="card" style="padding: 30px; margin-bottom: 10px">
-          <div style="font-weight: bold; font-size: 24px; margin-bottom: 20px">{{ blog.title }}</div>
+          <div style="font-weight: bold; font-size: 24px; margin-bottom: 20px">{{ internalreferral.title }}</div>
           <div style="color: #666; margin-bottom: 20px">
-            <span style="margin-right: 20px"><i class="el-icon-user"></i> {{ blog.userName }}</span>
-            <span style="margin-right: 20px"><i class="el-icon-date"></i> {{ blog.date }}</span>
-            <span style="margin-right: 20px"><i class="el-icon-eye"></i> {{ blog.readCount }}</span>
+            <span style="margin-right: 20px"><i class="el-icon-user"></i> {{ internalreferral.userName }}</span>
+            <span style="margin-right: 20px"><i class="el-icon-date"></i> {{ internalreferral.date }}</span>
+            <span style="margin-right: 20px"><i class="el-icon-eye"></i> {{ internalreferral.readCount }}</span>
             <span>
               <el-tag v-for="item in tagsArr" :key="item" type="primary" style="margin-right:5px">{{ item }}</el-tag>
             </span>
           </div>
 
           <div class="w-e-text">
-            <div v-html="blog.content"></div>
+            <div v-html="internalreferral.content"></div>
           </div>
 
         </div>
 
         <!--     点赞和收藏数据   -->
         <div class="card" style="text-align: center; font-size: 20px; color: #666; margin-bottom: 10px">
-          <span style="margin-right: 20px; cursor: pointer;" @click="setLikes" :class="{ 'active' : blog.userLike }"><i class="el-icon-like"></i> {{ blog.likesCount }}</span>
-          <span style=" cursor: pointer"  @click="setCollect" :class="{ 'active' : blog.userCollect }"><i class="el-icon-star-off"></i> {{ blog.collectCount }}</span>
+          <span style="margin-right: 20px; cursor: pointer;" @click="setLikes" :class="{ 'active' : internalreferral.userLike }"><i class="el-icon-like"></i> {{ internalreferral.likesCount }}</span>
+          <span style=" cursor: pointer"  @click="setCollect" :class="{ 'active' : internalreferral.userCollect }"><i class="el-icon-star-off"></i> {{ internalreferral.collectCount }}</span>
         </div>
 
-        <!--        评论-->
-        <Comment :fid="blogId" module='博客' />
+<!--        评论-->
+        <Comment :fid="interId" module='内推' />
       </div>
 
       <div style="width: 260px">
         <div class="card" style="margin-bottom: 10px">
           <div style="display: flex; align-items: center; grid-gap: 10px; margin-bottom: 10px">
-            <img :src="blog.user?.avatar" alt="" style="width: 50px; height: 50px; border-radius: 50%">
+            <img :src="internalreferral.user?.avatar" alt="" style="width: 50px; height: 50px; border-radius: 50%">
             <div style="flex: 1;">
-              <div style="font-weight: bold; margin-bottom: 5px">{{ blog.user?.name }}</div>
-              <div style="color: #666; font-size: 13px" class="line2">{{ blog.user?.info }}</div>
+              <div style="font-weight: bold; margin-bottom: 5px">{{ internalreferral.user?.name }}</div>
+              <div style="color: #666; font-size: 13px" class="line2">{{ internalreferral.user?.info }}</div>
             </div>
           </div>
 
           <div style="display: flex">
             <div style="flex: 1; text-align: center">
-              <div style="margin-bottom: 5px">文章</div>
-              <div style="color: #888">{{ blog.user?.blogCount }}</div>
+              <div style="margin-bottom: 5px">内推</div>
+              <div style="color: #888">{{ internalreferral.user?.interCount }}</div>
             </div>
             <div style="flex: 1; text-align: center">
               <div style="margin-bottom: 5px">点赞</div>
-              <div style="color: #888">{{ blog.user?.likesCount }}</div>
+              <div style="color: #888">{{ internalreferral.user?.likesCount }}</div>
             </div>
             <div style="flex: 1; text-align: center">
               <div style="margin-bottom: 5px">收藏</div>
-              <div style="color: #888">{{ blog.user?.collectCount }}</div>
+              <div style="color: #888">{{ internalreferral.user?.collectCount }}</div>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@
 
           <div>
             <div style="margin-bottom: 15px" v-for="item in recommendList" :key="item.id">
-              <a :href="'/front/blogDetail?blogId=' + item.id" target="_blank"><div class="recommend-title line2">{{ item.title }}</div></a>
+              <a :href="'/front/interDetail?interId=' + item.id" target="_blank"><div class="recommend-title line2">{{ item.title }}</div></a>
               <div style="color: #888">
                 <span>阅读</span> <span>{{ item.readCount }}</span>
                 <span style="margin-left: 10px">点赞</span> <span>{{ item.likesCount }}</span>
@@ -69,7 +69,9 @@
             </div>
           </div>
         </div>
+
       </div>
+
     </div>
 
     <Footer />
@@ -81,15 +83,15 @@ import Footer from "@/components/Footer";
 import Comment from "@/components/Comment";
 
 export default {
-  name: "BlogDetail",
+  name: "InterDetail",
   components: {
     Comment,
     Footer
   },
   data() {
     return {
-      blogId: this.$route.query.blogId,
-      blog: {},
+      interId: this.$route.query.interId,
+      internalreferral: {},
       tagsArr: [],
       recommendList: [],
     }
@@ -97,12 +99,12 @@ export default {
   created() {
     this.load()
 
-    this.$request.put('/blog/updateReadCount/' + this.blogId)
+    this.$request.put('/internalreferral/updateReadCount/' + this.interId)
   },
   methods: {
 
     setLikes() {
-      this.$request.post('/likes/set', {  fid: this.blogId, module: '博客' }).then(res => {
+      this.$request.post('/likes/set', {  fid: this.interId, module: '内推' }).then(res => {
         if (res.code === '200') {
           this.$message.success('操作成功')
 
@@ -111,7 +113,7 @@ export default {
       })
     },
     setCollect() {
-      this.$request.post('/collect/set', {  fid: this.blogId, module: '博客' }).then(res => {
+      this.$request.post('/collect/set', {  fid: this.interId, module: '内推' }).then(res => {
         if (res.code === '200') {
           this.$message.success('操作成功')
 
@@ -120,13 +122,13 @@ export default {
       })
     },
     load() {
-      this.$request.get('/blog/selectById/' + this.blogId).then(res => {
-        this.blog = res.data || {}
+      this.$request.get('/internal/selectById/' + this.interId).then(res => {
+        this.internalreferral = res.data || {}
 
-        this.tagsArr = JSON.parse(this.blog.tags || '[]')
+        this.tagsArr = JSON.parse(this.internalreferral.tags || '[]')
       })
 
-      this.$request.get('/blog/selectRecommend/' + this.blogId).then(res => {
+      this.$request.get('/internal/selectRecommend/' + this.interId).then(res => {
         this.recommendList = res.data || []
       })
     }

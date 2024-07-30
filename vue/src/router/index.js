@@ -28,6 +28,7 @@ const routes = [
       { path: 'activity', name: 'Activity', meta: { name: '活动信息' }, component: () => import('../views/manager/Activity') },
       { path: 'comment', name: 'Comment', meta: { name: '评论信息' }, component: () => import('../views/manager/Comment') },
       { path: 'activitySign', name: 'ActivitySign', meta: { name: '活动报名' }, component: () => import('../views/manager/ActivitySign') },
+      // { path: 'internalReferral', name: 'InternalReferral', meta: { name: '内推管理' }, component: () => import('../views/manager/InternalReferral') },
     ]
   },
   {
@@ -42,6 +43,8 @@ const routes = [
       { path: 'activity', name: 'Activity', meta: { name: '活动中心' }, component: () => import('../views/front/Activity') },
       { path: 'activityDetail', name: 'ActivityDetail', meta: { name: '活动详情' }, component: () => import('../views/front/ActivityDetail') },
       { path: 'newBlog', name: 'NewBlog', meta: { name: '博客编辑' }, component: () => import('../views/front/NewBlog') },
+      { path: 'internalReferral', name: 'InternalReferral', meta: { name: '内推中心' }, component: () => import('../views/front/InternalReferral') },
+      { path: 'internalReferralDetail', name: 'InternalReferralDetail', meta: { name: '内推详情' }, component: () => import('../views/front/InternalReferralDetail') },
     ]
   },
   { path: '/login', name: 'Login', meta: { name: '登录' }, component: () => import('../views/Login.vue') },
