@@ -150,20 +150,20 @@ export default {
 </script>
 
 <style scoped>
-/deep/.el-form-item__label {
+.el-form-item__label {
   font-weight: bold;
 }
-/deep/.el-upload {
+.el-upload {
   border-radius: 50%;
 }
-/deep/.avatar-uploader .el-upload {
+.avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   cursor: pointer;
   position: relative;
   overflow: hidden;
   border-radius: 50%;
 }
-/deep/.avatar-uploader .el-upload:hover {
+.avatar-uploader .el-upload:hover {
   border-color: #409EFF;
 }
 .avatar-uploader-icon {

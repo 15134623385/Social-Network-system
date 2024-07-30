@@ -13,6 +13,7 @@
 						<el-menu-item index="/front/home">首页</el-menu-item>
 						<el-menu-item index="/front/activity">活动中心</el-menu-item>
 						<el-menu-item index="/front/person">个人中心</el-menu-item>
+            <el-menu-item index="/front/internalreferral">内推中心</el-menu-item>
           </el-menu>
         </div>
       </div>
