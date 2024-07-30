@@ -37,6 +37,18 @@
             </div>
           </div>
         </div>
+
+        <!--     待定：是否删除   -->
+        <div style="margin-bottom: 10px">
+          <div v-for="item in topActivityList" :key="item.id" style="margin-bottom: 10px">
+            <a :href="'/front/activityDetail?activityId=' + item.id" target="_blank"><img :src="item.cover" alt="" style="width: 100%; border-radius: 5px"></a>
+          </div>
+        </div>
+
+        <div style="line-height: 30px; color: #666; padding: 0 10px">
+          <div>欢迎来到博客界面！</div>
+        </div>
+
       </div>
     </div>
   </div>

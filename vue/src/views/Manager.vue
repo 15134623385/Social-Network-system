@@ -44,10 +44,11 @@
             </template>
             <el-menu-item index="/category">博客分类</el-menu-item>
             <el-menu-item index="/blog">博客信息</el-menu-item>
-            <el-menu-item index="/activity">活动信息</el-menu-item>
             <el-menu-item index="/comment">评论信息</el-menu-item>
+            <el-menu-item index="/activity">活动信息</el-menu-item>
             <el-menu-item index="/activitySign">活动报名</el-menu-item>
             <el-menu-item index="/notice">公告信息</el-menu-item>
+            <el-menu-item index="/internalreferral">内推管理</el-menu-item>
           </el-submenu>
 
           <el-submenu index="user">

@@ -69,6 +69,15 @@
             </div>
           </div>
         </div>
+
+        <div class="card">
+          <div style="display: flex; grid-gap: 10px; ">
+            <div style="flex: 1; line-height: 25px">
+              欢迎来到博客论坛！
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   <Footer />
