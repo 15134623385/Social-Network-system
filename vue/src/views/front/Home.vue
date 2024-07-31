@@ -48,9 +48,6 @@
         </div>
 
         <div style="line-height: 30px; color: #666; padding: 0 10px">
-          <div>举报邮箱： feedback@xitu.io</div>
-          <div>座机电话： 010-83434395</div>
-          <div>京ICP备888888©2024 项目训练营</div>
         </div>
 
       </div>
