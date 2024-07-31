@@ -48,7 +48,7 @@
         </div>
 
         <div style="line-height: 30px; color: #666; padding: 0 10px">
-          <div>欢迎来到博客界面！</div>
+          <div>欢迎来到内推界面！</div>
         </div>
 
       </div>
@@ -62,10 +62,10 @@
 <script>
 
 import Footer from "@/components/Footer";
-import BlogList from "@/components/BlogList";
+import InternalList from "@/components/InternalList";
 export default {
   components: {
-    BlogList,
+    'inter-list':InternalList,
     Footer
   },
   data() {
@@ -80,7 +80,7 @@ export default {
     }
   },
   mounted() {
-    // this.load()
+    this.load()
 
     this.refreshTop()
 
@@ -117,13 +117,13 @@ export default {
     selectCategory(categoryName) {
       this.current = categoryName
     },
-    // load() {
-    //   // 请求分类的数据
-    //   this.$request.get('/category/selectAll').then(res => {
-    //     this.categoryList = res.data || []
-    //     this.categoryList.unshift({ name: '全部博客' })
-    //   })
-    // },
+    load() {
+      // 请求分类的数据
+      this.$request.get('/category/selectAll').then(res => {
+        this.categoryList = res.data || []
+        this.categoryList.unshift({ name: '全部内推' })
+      })
+    },
   }
 }
 </script>

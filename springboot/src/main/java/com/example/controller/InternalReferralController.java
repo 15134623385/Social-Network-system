@@ -58,6 +58,12 @@ public class InternalReferralController {
         return Result.success();
     }
 
+    @GetMapping("/selectById/{id}")
+    public Result selectbyId(@PathVariable Integer id) {
+        InternalReferral ir = internalReferralService.selectById(id);
+        return Result.success(ir);
+    }
+
     @GetMapping("/selectTop")
     public Result selectTop() {
         List<InternalReferral> list = internalReferralService.selectTop();

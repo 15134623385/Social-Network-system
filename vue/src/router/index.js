@@ -44,6 +44,7 @@ const routes = [
       { path: 'activity', name: 'Activity', meta: { name: '活动中心' }, component: () => import('../views/front/Activity') },
       { path: 'activityDetail', name: 'ActivityDetail', meta: { name: '活动详情' }, component: () => import('../views/front/ActivityDetail') },
       { path: 'internalReferral', name: 'InternalReferral', meta: { name: '内推信息' }, component: () => import('../views/front/InternalReferral') },
+      { path: 'interDetail', name: 'InternalReferralDetail', meta: { name: '内推详情' }, component: () => import('../views/front/InternalReferralDetail') },
       { path: 'newBlog', name: 'NewBlog', meta: { name: '博客编辑' }, component: () => import('../views/front/NewBlog') },
     ]
   },
