@@ -2,19 +2,6 @@
   <div class="main-content">
     <div style="display: flex; align-items: flex-start; grid-gap: 10px">
 
-      <div style="width: 150px" class="card">
-        <div class="category-item" :class="{ 'category-item-active': item.name === current }"
-             v-for="item in categoryList" :key="item.id" @click="selectCategory(item.name)">{{ item.name }}</div>
-      </div>
-
-      <div style="flex: 1;">
-
-        <inter-list :categoryName="current" ref="interListRef" />
-
-        <Footer />
-
-      </div>
-
       <div style="width: 260px">
         <div class="card" style="margin-bottom: 10px">
           <div style="font-size: 20px; font-weight: bold; margin-bottom: 10px">欢迎您！😊</div>
@@ -39,16 +26,6 @@
               </a>
             </div>
           </div>
-        </div>
-
-        <div style="margin-bottom: 10px">
-          <div v-for="item in topActivityList" :key="item.id" style="margin-bottom: 10px">
-            <a :href="'/front/activityDetail?activityId=' + item.id" target="_blank"><img :src="item.cover" alt="" style="width: 100%; border-radius: 5px"></a>
-          </div>
-        </div>
-
-        <div style="line-height: 30px; color: #666; padding: 0 10px">
-          <div>欢迎来到内推界面！</div>
         </div>
 
       </div>
