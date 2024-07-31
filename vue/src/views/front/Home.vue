@@ -47,12 +47,7 @@
           </div>
         </div>
 
-        <div style="line-height: 30px; color: #666; padding: 0 10px">
-        </div>
-
       </div>
-
-
 
     </div>
   </div>

@@ -18,7 +18,7 @@
       <div style="width: 260px">
         <div class="card" style="margin-bottom: 10px">
           <div style="font-size: 20px; font-weight: bold; margin-bottom: 10px">欢迎您！😊</div>
-          <a href="/front/person"><div style="color: #666">查看内推资料！快人一步！</div></a>
+          <a href="/front/person"><div style="color: #666">查看内推资料，快人一步！</div></a>
         </div>
 
         <div class="card" style="margin-bottom: 10px">
@@ -52,8 +52,6 @@
         </div>
 
       </div>
-
-
 
     </div>
   </div>

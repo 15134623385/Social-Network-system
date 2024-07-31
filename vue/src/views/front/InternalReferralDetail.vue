@@ -21,83 +21,8 @@
           </div>
 
         </div>
-
-        <!--     点赞和收藏数据   -->
-        <!--
-        <div class="card" style="text-align: center; font-size: 20px; color: #666; margin-bottom: 10px">
-          <span style="margin-right: 20px; cursor: pointer;" @click="setLikes"
-            :class="{ 'active': internalreferral.userLike }"><i class="el-icon-like"></i> {{
-              internalreferral.likesCount }}</span>
-          <span style=" cursor: pointer" @click="setCollect" :class="{ 'active': internalreferral.userCollect }"><i
-              class="el-icon-star-off"></i> {{ internalreferral.collectCount }}</span>
-        </div>
-        -->
-        
-        <!--        评论-->
         <Comment :fid="interId" module='内推' />
       </div>
-
-      <div style="width: 260px">
-        <div class="card" style="margin-bottom: 10px">
-          <!--
-          <div style="display: flex; align-items: center; grid-gap: 10px; margin-bottom: 10px">
-            <img :src="internalreferral.user?.avatar" alt="" style="width: 50px; height: 50px; border-radius: 50%">
-            <div style="flex: 1;">
-              <div style="font-weight: bold; margin-bottom: 5px">{{ internalreferral.user?.name }}</div>
-              <div style="color: #666; font-size: 13px" class="line2">{{ internalreferral.user?.info }}</div>
-            </div>
-          </div>
-          -->
-
-          <!--
-          <div style="display: flex">
-            <div style="flex: 1; text-align: center">
-              <div style="margin-bottom: 5px">内推</div>
-              <div style="color: #888">{{ internalreferral.user?.interCount }}</div>
-            </div>
-            <div style="flex: 1; text-align: center">
-              <div style="margin-bottom: 5px">点赞</div>
-              <div style="color: #888">{{ internalreferral.user?.likesCount }}</div>
-            </div>
-            <div style="flex: 1; text-align: center">
-              <div style="margin-bottom: 5px">收藏</div>
-              <div style="color: #888">{{ internalreferral.user?.collectCount }}</div>
-            </div>
-          </div>
-          -->
-        </div>
-        <!--
-        <div class="card" style="margin-bottom: 10px">
-          <div
-            style="font-weight: bold; font-size: 20px; padding-bottom: 10px; border-bottom: 1px solid #ddd; margin-bottom: 10px">
-            相关推荐</div>
-
-          <div>
-            <div style="margin-bottom: 15px" v-for="item in recommendList" :key="item.id">
-              <a :href="'/front/interDetail?interId=' + item.id" target="_blank">
-                <div class="recommend-title line2">{{ item.title }}</div>
-              </a>
-              <div style="color: #888">
-                <span>阅读</span> <span>{{ item.readCount }}</span>
-                <span style="margin-left: 10px">点赞</span> <span>{{ item.likesCount }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        -->
-        
-        <div class="card">
-          <div style="display: flex; grid-gap: 10px; ">
-            <div style="flex: 1; line-height: 25px">
-              欢迎来到博客论坛！
-            </div>
-            <img src="@/assets/imgs/广告.png" alt="" style="width: 50px; height: 50px; border-radius: 5px">
-          </div>
-        </div>
-
-      </div>
-
-
 
     </div>
 
